@@ -1,0 +1,124 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover" />
+<meta name="theme-color" content="#ffeccd" />
+<meta name="description" content="A gentle tap-and-talk game for little ones: spell words, count numbers and hunt letters." />
+<title>Little Speller</title>
+<link rel="icon" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100'%3E%3Ctext y='.9em' font-size='90'%3E%E2%AD%90%3C/text%3E%3C/svg%3E" />
+<link rel="stylesheet" href="styles.css" />
+</head>
+<body>
+  <div class="game">
+    <header class="hud">
+      <div class="hud__left">
+        <button class="icon-btn icon-btn--home" id="homeBtn" type="button" aria-label="Choose a different game">🏠</button>
+        <button class="player" id="player" type="button" aria-label="Change name" hidden>
+          <span aria-hidden="true">👋</span><span id="playerName">Mia</span>
+        </button>
+        <div class="stars" id="stars" title="Stars earned">
+          <span class="stars__icon" aria-hidden="true">⭐</span>
+          <span class="stars__count" id="starCount" aria-live="polite">0</span>
+        </div>
+      </div>
+      <div class="hud__buttons">
+        <button class="icon-btn icon-btn--mic" id="micBtn" type="button" aria-label="Say a letter, a word or a number" aria-pressed="false">🎤</button>
+        <button class="icon-btn" id="soundBtn" type="button" aria-label="Sound on" aria-pressed="true">🔊</button>
+        <button class="icon-btn" id="skipBtn" type="button" aria-label="Try a different one">🔄</button>
+      </div>
+    </header>
+
+    <main class="play">
+      <section class="board" id="wordBoard">
+        <button class="picture" id="picture" type="button" aria-label="Hear the word again">
+          <span class="picture__emoji" id="emoji" aria-hidden="true">🐱</span>
+        </button>
+        <div class="slots" id="slots" aria-label="Letter boxes"></div>
+        <div class="tray" id="tray" aria-label="Letters to tap"></div>
+      </section>
+
+      <section class="board board--math" id="mathBoard" hidden>
+        <div class="sum" id="sum" aria-label="Count the pictures"></div>
+        <div class="choices" id="choices" role="group" aria-label="Answers"></div>
+      </section>
+    </main>
+
+    <p class="hint" id="hint">Pick a game to play</p>
+  </div>
+
+  <div class="home" id="homeScreen" hidden>
+    <div class="home__card" role="dialog" aria-modal="true" aria-labelledby="homeTitle">
+      <h1 class="home__title" id="homeTitle">What shall we play?</h1>
+
+      <div class="home__grid">
+        <button class="pick pick--spell" type="button" data-mode="spell">
+          <span class="pick__emoji" aria-hidden="true">🔤</span>
+          <span class="pick__label">Spell a word</span>
+          <span class="pick__hint">cat · dog · sun</span>
+        </button>
+
+        <button class="pick pick--math" type="button" data-mode="math">
+          <span class="pick__emoji" aria-hidden="true">🔢</span>
+          <span class="pick__label">Numbers</span>
+          <span class="pick__hint">2 + 2 = ?</span>
+        </button>
+
+        <button class="pick pick--word" type="button" data-mode="word">
+          <span class="pick__emoji" aria-hidden="true">🧩</span>
+          <span class="pick__label">Letter hunt</span>
+          <span class="pick__hint">find them in the pile</span>
+        </button>
+      </div>
+
+      <button class="home__surprise" id="pickSurprise" type="button">🎲 Surprise me</button>
+
+      <button class="home__grownups" id="grownupBtn" type="button" aria-label="Grown-up voice settings, hold to open">
+        👨‍👩‍👧 Grown-up voice <span class="home__grownups-hint">hold</span>
+      </button>
+    </div>
+  </div>
+
+  <div class="start" id="startScreen" hidden>
+    <div class="start__card" role="dialog" aria-modal="true" aria-labelledby="startTitle">
+      <h1 class="start__title" id="startTitle">What's your name?</h1>
+
+      <button class="start__mic" id="nameMic" type="button">
+        <span class="start__mic-icon" aria-hidden="true">🎤</span>
+        <span class="start__mic-label">Say your name</span>
+      </button>
+
+      <form class="start__form" id="nameForm">
+        <label class="start__label" for="nameInput">or a grown-up can type it</label>
+        <input class="start__input" id="nameInput" type="text" maxlength="14" placeholder="Mia"
+               autocomplete="off" autocapitalize="words" autocorrect="off" spellcheck="false"
+               enterkeyhint="go" />
+        <button class="start__go" id="nameGo" type="submit">Let's play</button>
+      </form>
+
+      <p class="start__status" id="nameStatus" role="status"></p>
+    </div>
+  </div>
+
+  <div class="grownup" id="grownupScreen" hidden>
+    <div class="grownup__card" role="dialog" aria-modal="true" aria-labelledby="grownupTitle">
+      <h2 class="grownup__title" id="grownupTitle">Your voice for the praise</h2>
+      <p class="grownup__text">Record a few short phrases in your own voice. When she gets something right the game plays you instead of the robot voice.</p>
+
+      <div class="voice-list" id="voiceList"></div>
+
+      <p class="grownup__status" id="voiceStatus" role="status"></p>
+      <button class="grownup__close" id="grownupClose" type="button">Done</button>
+      <p class="grownup__note">Tap Record, say the phrase, then tap Stop. Recordings stay on this device.</p>
+    </div>
+  </div>
+
+  <div class="toast" id="toast" role="status" aria-live="polite"></div>
+
+  <noscript>
+    <p class="hint">This game needs JavaScript turned on.</p>
+  </noscript>
+
+  <script src="game.js"></script>
+</body>
+</html>
