@@ -1,7 +1,7 @@
 (() => {
   'use strict';
 
-  /* Every spelling round uses three letters, so little hands only ever juggle three tiles. */
+  /* Three-year-old words: three letters, pictures a small child already knows. */
   const WORDS = [
     { word: 'CAT', emoji: '🐱' },
     { word: 'DOG', emoji: '🐶' },
@@ -30,10 +30,102 @@
     { word: 'TEA', emoji: '🍵' }
   ];
 
+  /* A four-year-old gets the easy three-letter words plus four-letter ones. */
+  const WORDS_4 = [
+    { word: 'CAT', emoji: '🐱' },
+    { word: 'DOG', emoji: '🐶' },
+    { word: 'SUN', emoji: '☀️' },
+    { word: 'FISH', emoji: '🐟' },
+    { word: 'STAR', emoji: '⭐' },
+    { word: 'BOAT', emoji: '⛵' },
+    { word: 'CAKE', emoji: '🍰' },
+    { word: 'TREE', emoji: '🌳' },
+    { word: 'MOON', emoji: '🌙' },
+    { word: 'DUCK', emoji: '🦆' },
+    { word: 'MILK', emoji: '🥛' },
+    { word: 'BEAR', emoji: '🐻' },
+    { word: 'LION', emoji: '🦁' },
+    { word: 'KITE', emoji: '🪁' },
+    { word: 'SOCK', emoji: '🧦' },
+    { word: 'HAND', emoji: '✋' },
+    { word: 'FROG', emoji: '🐸' },
+    { word: 'BALL', emoji: '⚽' },
+    { word: 'BOOK', emoji: '📖' },
+    { word: 'RAIN', emoji: '🌧️' },
+    { word: 'SHOE', emoji: '👟' },
+    { word: 'CORN', emoji: '🌽' },
+    { word: 'LEAF', emoji: '🍃' },
+    { word: 'CRAB', emoji: '🦀' },
+    { word: 'PEAR', emoji: '🍐' }
+  ];
+
+  /* Five and six year olds read longer words, so the tray grows with them. */
+  const WORDS_5 = [
+    { word: 'FISH', emoji: '🐟' },
+    { word: 'STAR', emoji: '⭐' },
+    { word: 'BOAT', emoji: '⛵' },
+    { word: 'CAKE', emoji: '🍰' },
+    { word: 'TREE', emoji: '🌳' },
+    { word: 'MOON', emoji: '🌙' },
+    { word: 'DUCK', emoji: '🦆' },
+    { word: 'MILK', emoji: '🥛' },
+    { word: 'BEAR', emoji: '🐻' },
+    { word: 'LION', emoji: '🦁' },
+    { word: 'KITE', emoji: '🪁' },
+    { word: 'SOCK', emoji: '🧦' },
+    { word: 'HAND', emoji: '✋' },
+    { word: 'FROG', emoji: '🐸' },
+    { word: 'BALL', emoji: '⚽' },
+    { word: 'BOOK', emoji: '📖' },
+    { word: 'RAIN', emoji: '🌧️' },
+    { word: 'SHOE', emoji: '👟' },
+    { word: 'CORN', emoji: '🌽' },
+    { word: 'LEAF', emoji: '🍃' },
+    { word: 'BIRD', emoji: '🐦' },
+    { word: 'DOOR', emoji: '🚪' },
+    { word: 'CRAB', emoji: '🦀' },
+    { word: 'PEAR', emoji: '🍐' },
+    { word: 'RING', emoji: '💍' },
+    { word: 'WORM', emoji: '🪱' },
+    { word: 'GIFT', emoji: '🎁' },
+    { word: 'LAMP', emoji: '💡' }
+  ];
+
+  const WORDS_6 = [
+    { word: 'SNAKE', emoji: '🐍' },
+    { word: 'HORSE', emoji: '🐴' },
+    { word: 'APPLE', emoji: '🍎' },
+    { word: 'HOUSE', emoji: '🏠' },
+    { word: 'MOUSE', emoji: '🐭' },
+    { word: 'TRAIN', emoji: '🚆' },
+    { word: 'CLOUD', emoji: '☁️' },
+    { word: 'SMILE', emoji: '😊' },
+    { word: 'CHAIR', emoji: '🪑' },
+    { word: 'BREAD', emoji: '🍞' },
+    { word: 'SHEEP', emoji: '🐑' },
+    { word: 'PLANT', emoji: '🌱' },
+    { word: 'WATER', emoji: '💧' },
+    { word: 'SNAIL', emoji: '🐌' },
+    { word: 'TIGER', emoji: '🐯' },
+    { word: 'SPOON', emoji: '🥄' },
+    { word: 'PLANE', emoji: '✈️' },
+    { word: 'BEACH', emoji: '🏖️' },
+    { word: 'JUICE', emoji: '🧃' },
+    { word: 'CANDY', emoji: '🍬' },
+    { word: 'CLOCK', emoji: '🕐' },
+    { word: 'HEART', emoji: '❤️' },
+    { word: 'ZEBRA', emoji: '🦓' },
+    { word: 'FISH', emoji: '🐟' },
+    { word: 'STAR', emoji: '⭐' }
+  ];
+
+  const WORDS_BY_AGE = { 3: WORDS, 4: WORDS_4, 5: WORDS_5, 6: WORDS_6 };
+
   const COLORS = ['#ef5350', '#fb8c00', '#43a047', '#1e88e5', '#8e24aa', '#00897b'];
   const SOUND_KEY = 'littlespeller.sound';
   const NAME_KEY = 'littlespeller.name';
   const STARS_KEY = 'littlespeller.stars';
+  const AGE_KEY = 'littlespeller.age';
 
   /* Speech recognition often writes a letter name as an ordinary word. */
   const LETTER_NAMES = {
@@ -63,7 +155,17 @@
   const CHEERS = ['YAY!', 'WOW!', 'YES!', 'SUPER!'];
   const SUM_EMOJI = ['🍎', '⭐', '🐟', '🍓', '🎈', '🍪', '🐣', '🌸', '🚗', '🍌', '🦋'];
   const ALPHABET = 'ABCDEFGHIJKLMNOPQRSTUVWXYZ'.split('');
-  const DECOY_COUNT = 3;
+  const AGES = [3, 4, 5, 6];
+  const DEFAULT_AGE = 4;
+
+  /* Sums and the letter pile grow with the age. */
+  const SUM_BY_AGE = {
+    3: { max: 2, choices: 2 },
+    4: { max: 4, choices: 3 },
+    5: { max: 5, choices: 3 },
+    6: { max: 6, choices: 3 }
+  };
+  const DECOYS_BY_AGE = { 3: 2, 4: 3, 5: 4, 6: 4 };
   const MODES = ['spell', 'math', 'word'];
   const MODE_LABELS = { spell: 'Spell a word', math: 'Numbers', word: 'Letter hunt' };
 
@@ -84,6 +186,8 @@
     homeBtn: document.getElementById('homeBtn'),
     player: document.getElementById('player'),
     playerName: document.getElementById('playerName'),
+    ageBtn: document.getElementById('ageBtn'),
+    ageLabel: document.getElementById('ageLabel'),
     stars: document.getElementById('stars'),
     starCount: document.getElementById('starCount'),
     micBtn: document.getElementById('micBtn'),
@@ -105,6 +209,10 @@
     nameForm: document.getElementById('nameForm'),
     nameInput: document.getElementById('nameInput'),
     nameMic: document.getElementById('nameMic'),
+    ageScreen: document.getElementById('ageScreen'),
+    ageTitle: document.getElementById('ageTitle'),
+    ageLater: document.getElementById('ageLater'),
+    homeAge: document.getElementById('homeAge'),
     nameStatus: document.getElementById('nameStatus'),
     grownup: document.getElementById('grownupScreen'),
     voiceList: document.getElementById('voiceList'),
@@ -123,6 +231,7 @@
   let cardOpen = false;
   let cardReturnHome = false;
   let playerName = '';
+  let age = 0;
   let soundOn = true;
   let mode = 'spell';
   let screen = 'home';
@@ -589,9 +698,13 @@
 
   /* -------------------------------------------------------------- word rounds */
 
+  function wordsForAge() {
+    return WORDS_BY_AGE[age] || WORDS_BY_AGE[DEFAULT_AGE];
+  }
+
   function nextWord() {
     if (!deck.length) {
-      deck = shuffle(WORDS.filter((item) => item.word !== lastWord));
+      deck = shuffle(wordsForAge().filter((item) => item.word !== lastWord));
     }
     current = deck.pop();
     lastWord = current.word;
@@ -644,7 +757,7 @@
 
   function decoyLetters(letters) {
     const pool = shuffle(ALPHABET.filter((letter) => letters.indexOf(letter) === -1));
-    return pool.slice(0, DECOY_COUNT);
+    return pool.slice(0, DECOYS_BY_AGE[age] || DECOYS_BY_AGE[DEFAULT_AGE]);
   }
 
   function buildTray(letters) {
@@ -739,8 +852,9 @@
     celebrating = false;
     syncBoards();
 
-    const a = 1 + Math.floor(Math.random() * 4);
-    const b = 1 + Math.floor(Math.random() * 4);
+    const band = SUM_BY_AGE[age] || SUM_BY_AGE[DEFAULT_AGE];
+    const a = 1 + Math.floor(Math.random() * band.max);
+    const b = 1 + Math.floor(Math.random() * band.max);
     sum = {
       a,
       b,
@@ -789,6 +903,8 @@
   }
 
   function renderChoices() {
+    const band = SUM_BY_AGE[age] || SUM_BY_AGE[DEFAULT_AGE];
+    const wanted = Math.max(2, band.choices);
     const options = [sum.total];
     const candidates = shuffle([
       sum.total - 1,
@@ -798,7 +914,7 @@
       sum.total + 3
     ]).filter((value) => value > 0 && value !== sum.total);
 
-    while (options.length < 3 && candidates.length) {
+    while (options.length < wanted && candidates.length) {
       const value = candidates.pop();
       if (options.indexOf(value) === -1) options.push(value);
     }
@@ -1294,11 +1410,17 @@
     playerName = extractName(raw) || '';
     storageSet(NAME_KEY, playerName);
     showPlayer(playerName);
+    renderAge();
 
     const returnHome = cardReturnHome;
     closeNameCard();
 
     if (returnHome) {
+      if (!age) {
+        openAgeCard(true);
+        return;
+      }
+      renderAge();
       openHome(true);
       return;
     }
@@ -1312,6 +1434,89 @@
         speak(current.word, 0.85);
       }
     }, 900);
+  }
+
+  /* -------------------------------------------------------------- age setup */
+
+  function renderAge() {
+    if (el.ageBtn) {
+      el.ageBtn.hidden = !age;
+      el.ageLabel.textContent = age ? String(age) : '';
+      el.ageBtn.setAttribute(
+        'aria-label',
+        age ? 'Words for ' + age + ' year olds. Change age' : 'Choose an age'
+      );
+    }
+    if (el.homeAge) {
+      el.homeAge.textContent = age ? 'Words, sums and puzzles for a ' + age + ' year old' : '';
+      el.homeAge.hidden = !age;
+    }
+    const hint = document.querySelector('.pick--spell .pick__hint');
+    if (hint) {
+      hint.textContent = wordsForAge()
+        .slice(0, 3)
+        .map((item) => item.word.toLowerCase())
+        .join(' · ');
+    }
+  }
+
+  function openAgeCard(firstTime) {
+    cardOpen = true;
+    cardReturnHome = screen === 'home';
+    setListening(false);
+    cancelSpeech();
+    el.ageScreen.hidden = false;
+    el.ageScreen.classList.toggle('is-first', Boolean(firstTime));
+    if (el.ageLater) el.ageLater.hidden = !age;
+    const question = playerName ? 'How old are you, ' + playerName + '?' : 'How old are you?';
+    if (el.ageTitle) el.ageTitle.textContent = question;
+    speak(question, 0.9);
+    updateHint();
+  }
+
+  function closeAgeCard() {
+    cardOpen = false;
+    el.ageScreen.hidden = true;
+    updateHint();
+  }
+
+  function chooseAge(value) {
+    age = AGES.indexOf(value) === -1 ? DEFAULT_AGE : value;
+    storageSet(AGE_KEY, String(age));
+    deck = [];
+    renderAge();
+    chime();
+
+    const returnHome = cardReturnHome;
+    closeAgeCard();
+    const line = NUM_WORDS[age] + '! ' + (playerName ? "Let's play, " + playerName + '.' : "Let's play.");
+
+    if (returnHome) {
+      openHome(false);
+      speak(line, 0.9);
+      return;
+    }
+
+    speak(line, 0.9);
+    window.setTimeout(() => {
+      if (screen !== 'play') return;
+      if (mode === 'math') {
+        speakQuestion();
+      } else if (current) {
+        speak(current.word, 0.85);
+      }
+    }, 1400);
+  }
+
+  function dismissAge() {
+    const returnHome = cardReturnHome;
+    closeAgeCard();
+    if (!age) {
+      age = DEFAULT_AGE;
+      storageSet(AGE_KEY, String(age));
+      renderAge();
+    }
+    if (returnHome) openHome(false);
   }
 
   function updateHint() {
@@ -1405,6 +1610,18 @@
     openNameCard(false);
   });
 
+  el.ageBtn.addEventListener('click', () => {
+    if (cardOpen || grownupOpen) return;
+    chime();
+    openAgeCard(false);
+  });
+
+  Array.from(document.querySelectorAll('[data-age]')).forEach((button) => {
+    button.addEventListener('click', () => chooseAge(Number(button.dataset.age)));
+  });
+
+  el.ageLater.addEventListener('click', dismissAge);
+
   Array.from(document.querySelectorAll('[data-mode]')).forEach((button) => {
     button.addEventListener('click', () => {
       chime();
@@ -1482,6 +1699,8 @@
   soundOn = storageGet(SOUND_KEY) !== 'off';
   playerName = storageGet(NAME_KEY) || '';
   stars = Math.max(0, Number(storageGet(STARS_KEY)) || 0);
+  age = Number(storageGet(AGE_KEY)) || 0;
+  if (AGES.indexOf(age) === -1) age = 0;
 
   applySound();
   if (el.starCount) el.starCount.textContent = String(stars);
@@ -1493,14 +1712,17 @@
   }
 
   showPlayer(playerName);
+  renderAge();
 
   loadClips().then(() => {
     if (grownupOpen) renderVoiceList();
   });
 
-  if (playerName) {
-    openHome(true);
-  } else {
+  if (!playerName) {
     openNameCard(true);
+  } else if (!age) {
+    openAgeCard(true);
+  } else {
+    openHome(true);
   }
 })();

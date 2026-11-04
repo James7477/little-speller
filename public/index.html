@@ -21,6 +21,9 @@
           <span class="stars__icon" aria-hidden="true">⭐</span>
           <span class="stars__count" id="starCount" aria-live="polite">0</span>
         </div>
+        <button class="player player--age" id="ageBtn" type="button" aria-label="Change age" hidden>
+          <span aria-hidden="true">🎂</span><span id="ageLabel">4</span>
+        </button>
       </div>
       <div class="hud__buttons">
         <button class="icon-btn icon-btn--mic" id="micBtn" type="button" aria-label="Say a letter, a word or a number" aria-pressed="false">🎤</button>
@@ -50,6 +53,7 @@
   <div class="home" id="homeScreen" hidden>
     <div class="home__card" role="dialog" aria-modal="true" aria-labelledby="homeTitle">
       <h1 class="home__title" id="homeTitle">What shall we play?</h1>
+      <p class="home__age" id="homeAge" hidden></p>
 
       <div class="home__grid">
         <button class="pick pick--spell" type="button" data-mode="spell">
@@ -97,6 +101,30 @@
       </form>
 
       <p class="start__status" id="nameStatus" role="status"></p>
+    </div>
+  </div>
+
+  <div class="age" id="ageScreen" hidden>
+    <div class="age__card" role="dialog" aria-modal="true" aria-labelledby="ageTitle">
+      <h1 class="age__title" id="ageTitle">How old are you?</h1>
+      <p class="age__text">Words, sums and puzzles change with the age.</p>
+
+      <div class="age__grid">
+        <button class="age__pick" type="button" data-age="3">
+          <span class="age__num">3</span><span class="age__label">years</span>
+        </button>
+        <button class="age__pick" type="button" data-age="4">
+          <span class="age__num">4</span><span class="age__label">years</span>
+        </button>
+        <button class="age__pick" type="button" data-age="5">
+          <span class="age__num">5</span><span class="age__label">years</span>
+        </button>
+        <button class="age__pick" type="button" data-age="6">
+          <span class="age__num">6</span><span class="age__label">years</span>
+        </button>
+      </div>
+
+      <button class="age__later" id="ageLater" type="button" hidden>Not now</button>
     </div>
   </div>
 
