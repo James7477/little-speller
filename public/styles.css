@@ -941,6 +941,20 @@ body.is-listening .hint {
   box-shadow: 0 4px 12px rgba(122, 76, 30, 0.1);
 }
 
+.voice__heading {
+  margin: 6px 0 -4px;
+  font-size: clamp(11px, 2.2vmin, 13px);
+  font-weight: 800;
+  letter-spacing: 0.04em;
+  text-transform: uppercase;
+  color: rgba(59, 42, 38, 0.45);
+}
+
+.voice--ask {
+  background: linear-gradient(180deg, #fffdf8, #ffeede);
+  border-color: rgba(179, 84, 30, 0.3);
+}
+
 .voice__label {
   text-align: left;
   font-weight: 800;

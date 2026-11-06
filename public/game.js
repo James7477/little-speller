@@ -175,9 +175,11 @@
     { id: 'youdidit', label: 'You did it!' },
     { id: 'highfive', label: 'High five!' },
     { id: 'superstar', label: 'Superstar!' },
-    { id: 'tryagain', label: 'Almost! Try again.' }
+    { id: 'tryagain', label: 'Almost! Try again.' },
+    { id: 'agequestion', label: 'How old are you?', asks: true }
   ];
   const TRY_AGAIN_SLOT = 'tryagain';
+  const AGE_SLOT = 'agequestion';
   const DB_NAME = 'littlespeller';
   const DB_STORE = 'clips';
   const MAX_RECORD_MS = 5000;
@@ -1060,9 +1062,9 @@
   }
 
   function praiseClipUrl() {
-    const ids = VOICE_SLOTS.filter((slot) => slot.id !== TRY_AGAIN_SLOT && clipUrls[slot.id]).map(
-      (slot) => slot.id
-    );
+    const ids = VOICE_SLOTS.filter(
+      (slot) => !slot.asks && slot.id !== TRY_AGAIN_SLOT && clipUrls[slot.id]
+    ).map((slot) => slot.id);
     return ids.length ? clipUrls[pick(ids)] : null;
   }
 
@@ -1133,8 +1135,16 @@
     const liveId = recordingSlotId();
 
     VOICE_SLOTS.forEach((slot) => {
+      /* The age question sits apart: it is asked, not shouted as praise. */
+      if (slot.asks) {
+        const heading = document.createElement('p');
+        heading.className = 'voice__heading';
+        heading.textContent = 'The age question';
+        el.voiceList.append(heading);
+      }
+
       const row = document.createElement('div');
-      row.className = 'voice';
+      row.className = 'voice' + (slot.asks ? ' voice--ask' : '');
       row.dataset.slot = slot.id;
 
       const label = document.createElement('span');
@@ -1470,7 +1480,10 @@
     if (el.ageLater) el.ageLater.hidden = !age;
     const question = playerName ? 'How old are you, ' + playerName + '?' : 'How old are you?';
     if (el.ageTitle) el.ageTitle.textContent = question;
-    speak(question, 0.9);
+
+    /* The grown-up's own recording asks it when there is one. */
+    const clip = clipUrls[AGE_SLOT];
+    if (!clip || !playClip(clip, question)) speak(question, 0.9);
     updateHint();
   }
 
