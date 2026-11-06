@@ -1238,7 +1238,9 @@ body.is-listening .hint {
     </div>
   </div>
 
-  <div class="start" id="startScreen" hidden>
+  <!-- Shown by default so the name prompt is on screen even before (or without)
+       the script running; the game hides it once it knows it has a name. -->
+  <div class="start" id="startScreen">
     <div class="start__card" role="dialog" aria-modal="true" aria-labelledby="startTitle">
       <h1 class="start__title" id="startTitle">What's your name?</h1>
 
@@ -1488,6 +1490,15 @@ body.is-listening .hint {
   const DB_NAME = 'littlespeller';
   const DB_STORE = 'clips';
   const MAX_RECORD_MS = 5000;
+
+  /* Older tablet browsers have no replaceChildren, and the first render would
+     throw on it, leaving the child staring at an empty board. */
+  if (!Element.prototype.replaceChildren) {
+    Element.prototype.replaceChildren = function () {
+      while (this.firstChild) this.removeChild(this.firstChild);
+      if (arguments.length) this.append.apply(this, arguments);
+    };
+  }
 
   const el = {
     homeBtn: document.getElementById('homeBtn'),
@@ -3084,10 +3095,14 @@ body.is-listening .hint {
 
   if (!playerName) {
     openNameCard(true);
-  } else if (!age) {
-    openAgeCard(true);
   } else {
-    openHome(true);
+    /* the name card sits in the page itself, so hide it once a name is known */
+    el.start.hidden = true;
+    if (!age) {
+      openAgeCard(true);
+    } else {
+      openHome(true);
+    }
   }
 })();
 

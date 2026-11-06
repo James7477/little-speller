@@ -184,6 +184,15 @@
   const DB_STORE = 'clips';
   const MAX_RECORD_MS = 5000;
 
+  /* Older tablet browsers have no replaceChildren, and the first render would
+     throw on it, leaving the child staring at an empty board. */
+  if (!Element.prototype.replaceChildren) {
+    Element.prototype.replaceChildren = function () {
+      while (this.firstChild) this.removeChild(this.firstChild);
+      if (arguments.length) this.append.apply(this, arguments);
+    };
+  }
+
   const el = {
     homeBtn: document.getElementById('homeBtn'),
     player: document.getElementById('player'),
@@ -1779,9 +1788,13 @@
 
   if (!playerName) {
     openNameCard(true);
-  } else if (!age) {
-    openAgeCard(true);
   } else {
-    openHome(true);
+    /* the name card sits in the page itself, so hide it once a name is known */
+    el.start.hidden = true;
+    if (!age) {
+      openAgeCard(true);
+    } else {
+      openHome(true);
+    }
   }
 })();

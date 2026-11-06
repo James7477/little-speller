@@ -83,7 +83,9 @@
     </div>
   </div>
 
-  <div class="start" id="startScreen" hidden>
+  <!-- Shown by default so the name prompt is on screen even before (or without)
+       the script running; the game hides it once it knows it has a name. -->
+  <div class="start" id="startScreen">
     <div class="start__card" role="dialog" aria-modal="true" aria-labelledby="startTitle">
       <h1 class="start__title" id="startTitle">What's your name?</h1>
 
