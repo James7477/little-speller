@@ -301,6 +301,14 @@
     }
   }
 
+  function storageRemove(key) {
+    try {
+      localStorage.removeItem(key);
+    } catch (err) {
+      /* nothing to forget */
+    }
+  }
+
   let toastTimer = 0;
 
   function toast(message) {
@@ -979,9 +987,40 @@
     return dbPromise;
   }
 
+  /* Some browsers refuse a database for a page opened straight from storage, or
+     in private mode. The clips then live in plain storage as short data URLs so
+     a copied-onto-the-tablet copy still keeps the parent's voice. */
+  const CLIP_KEY = 'littlespeller.clip.';
+
+  function blobToDataUrl(blob) {
+    return new Promise((resolve) => {
+      try {
+        const reader = new FileReader();
+        reader.onload = () => resolve(typeof reader.result === 'string' ? reader.result : null);
+        reader.onerror = () => resolve(null);
+        reader.readAsDataURL(blob);
+      } catch (err) {
+        resolve(null);
+      }
+    });
+  }
+
+  function storeClipFallback(id, blob) {
+    return blobToDataUrl(blob).then((url) => {
+      if (url) storageSet(CLIP_KEY + id, url);
+    });
+  }
+
+  function loadClipsFallback() {
+    VOICE_SLOTS.forEach((slot) => {
+      const url = storageGet(CLIP_KEY + slot.id);
+      if (url) clipUrls[slot.id] = url;
+    });
+  }
+
   function storeClip(id, blob) {
     return openDb().then((db) => {
-      if (!db) return;
+      if (!db) return storeClipFallback(id, blob);
       return new Promise((resolve) => {
         try {
           const tx = db.transaction(DB_STORE, 'readwrite');
@@ -998,7 +1037,10 @@
 
   function removeClip(id) {
     return openDb().then((db) => {
-      if (!db) return;
+      if (!db) {
+        storageRemove(CLIP_KEY + id);
+        return;
+      }
       return new Promise((resolve) => {
         try {
           const tx = db.transaction(DB_STORE, 'readwrite');
@@ -1015,7 +1057,11 @@
 
   function loadClips() {
     return openDb().then((db) => {
-      if (!db) return null;
+      if (!db) {
+        loadClipsFallback();
+        if (grownupOpen) renderVoiceList();
+        return null;
+      }
       return Promise.all(
         VOICE_SLOTS.map(
           (slot) =>

@@ -30,6 +30,20 @@ Then visit http://localhost:3000. Use `localhost` or an `https://` address rathe
 than a bare file path, because the microphone permission needed for recording is
 only granted in those cases.
 
+## One file, no connection
+
+`offline/LittleSpeller.html` is the entire game in a single file — styles and
+script inlined, nothing fetched at runtime. Copy that one file onto the tablet and
+open it in a browser; it plays with the tablet in airplane mode. Recordings are
+kept in that browser's storage on that device, so it's worth recording the voice
+on the tablet itself.
+
+Rebuild it after changing anything in `public/`:
+
+```bash
+python3 tools/build-offline.py
+```
+
 ## The grown-up panel
 
 Hold the small button in the corner to open it. From there you can set the child's
